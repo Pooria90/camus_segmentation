@@ -169,6 +169,15 @@ def parse_args(input_args=None):
             "GPU number."
         )
     )
+
+    parser.add_argument(
+        "--augmentations",
+        type=bool,
+        default=True,
+        help=(
+            "Whether using traditional augmentations or not."
+        )
+    )
     
     if input_args is not None:
         args = parser.parse_args(input_args)
