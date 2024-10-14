@@ -22,8 +22,11 @@ def main(args):
 
     device = f'cuda:{args.gpu_id}' if torch.cuda.is_available() else 'cpu'
     
-    # no transforms for now! we want to compare classical vs diffusion-based augmentations
-    train_trans = CustomTransform(size=args.image_size,angle=0,translate=0,scale=0,shear=0,b_factor=0,c_factor=0,hflip=0)
+    if args.augmentations:
+        train_trans = CustomTransform()
+    else:
+        train_trans = CustomTransform(size=args.image_size,angle=0,translate=0,scale=0,shear=0,b_factor=0,c_factor=0,hflip=0)
+        
     valid_trans = CustomTransform(size=args.image_size,angle=0,translate=0,scale=0,shear=0,b_factor=0,c_factor=0,hflip=0)
 
     train_ds = SegDataset(
