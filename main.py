@@ -26,7 +26,7 @@ def main(args):
         train_trans = CustomTransform()
     else:
         train_trans = CustomTransform(size=args.image_size,angle=0,translate=0,scale=0,shear=0,b_factor=0,c_factor=0,hflip=0)
-        
+
     valid_trans = CustomTransform(size=args.image_size,angle=0,translate=0,scale=0,shear=0,b_factor=0,c_factor=0,hflip=0)
 
     train_ds = SegDataset(
