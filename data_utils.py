@@ -3,13 +3,24 @@ import random
 import math
 import numpy as np
 import cv2
+import torch
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
 from torchvision.io import read_image, ImageReadMode
 from copy import deepcopy
 
+
 _IMAGE_EXT = ('png', 'jpg', 'jpeg')
+
+
+def convert_sequential(img):
+    u = torch.unique(img)  # unique values
+    img2 = torch.zeros_like(img)  # construct new image
+    r = torch.arange(len(u))  # new values
+    for i,k in enumerate(u): img2[torch.where(img==k)] = r[i]  # convert
+    return img2
+
 
 class CustomTransform(object):
     def __init__(
@@ -66,7 +77,8 @@ class CustomTransform(object):
         mask = transforms.functional.affine(mask, angle, translate, scale, shear)
         #if hflip:
         #    mask = transforms.functional.hflip(mask)
-        mask = mask.float() / 85 # only {0,85,170,255} values are in mask
+        # mask = mask.float() / 85 # only {0,85,170,255} values are in mask
+        mask = convert_sequential(mask)
         mask = mask.long()
 
         return image, mask
