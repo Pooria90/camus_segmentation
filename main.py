@@ -45,13 +45,13 @@ def main(args):
     valid_dl = DataLoader(valid_ds, batch_size=args.valid_batch_size, pin_memory=torch.cuda.is_available())
 
     if args.model == 'unet_small':
-        model = get_unet_small()
+        model = get_unet_small(out_channels=args.num_classes)
         model = model.to(device)
     elif args.model == 'unet_large':
-        model = get_unet_large()
+        model = get_unet_large(out_channels=args.num_classes)
         model = model.to(device)
     elif args.model == 'attention_unet':
-        model = get_attention_unet()
+        model = get_attention_unet(out_channels=args.num_classes)
         model = model.to(device)
     
     if args.load_model_path:
