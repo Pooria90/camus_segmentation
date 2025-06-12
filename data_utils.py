@@ -17,7 +17,7 @@ _IMAGE_EXT = ('png', 'jpg', 'jpeg')
 def convert_sequential(img):
     u = torch.unique(img)  # unique values
     img2 = torch.zeros_like(img)  # construct new image
-    r = torch.arange(len(u))  # new values
+    r = torch.arange(len(u), dtype=torch.uint8)  # new values
     for i,k in enumerate(u): img2[torch.where(img==k)] = r[i]  # convert
     return img2
 
@@ -63,7 +63,7 @@ class CustomTransform(object):
         std = self.std
 
         #image = self.totensor(image)
-        image = transforms.functional.resize(image, size, transforms.InterpolationMode.BICUBIC)
+        image = transforms.functional.resize(image, (size, size), transforms.InterpolationMode.BICUBIC)
         image = transforms.functional.affine(image, angle, translate, scale, shear)
         image = transforms.functional.adjust_brightness(image, b_factor)
         image = transforms.functional.adjust_contrast(image, c_factor)
@@ -73,7 +73,7 @@ class CustomTransform(object):
         image = transforms.functional.normalize(image, [mean], [std])
 
         #mask = self.totensor(mask)
-        mask = transforms.functional.resize(mask, size, transforms.InterpolationMode.NEAREST)
+        mask = transforms.functional.resize(mask, (size, size), transforms.InterpolationMode.NEAREST)
         mask = transforms.functional.affine(mask, angle, translate, scale, shear)
         #if hflip:
         #    mask = transforms.functional.hflip(mask)
